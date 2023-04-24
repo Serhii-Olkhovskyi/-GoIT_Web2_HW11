@@ -2,7 +2,7 @@
 name = "py-web-11"
 version = "0.1.0"
 description = ""
-authors = ["SiaAnalyst"]
+authors = ["Serhii"]
 readme = "README.md"
 packages = [{include = "py_web_11"}]
 
