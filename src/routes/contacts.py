@@ -34,7 +34,7 @@ async def get_contacts(skip: int = 0, limit: int = 100, db: Session = Depends(ge
 
 
 @router.get(
-    "/by_id/{contact_id}",
+    "/{contact_id}",
     response_model=ContactResponse
 )
 async def get_contact(contact_id: int, db: Session = Depends(get_db)):
@@ -49,62 +49,6 @@ async def get_contact(contact_id: int, db: Session = Depends(get_db)):
     if not contact:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='NOT_FOUND')
     return contact
-
-
-@router.get(
-    "/by_fname/{first_name}",
-    response_model=List[ContactResponse]
-)
-async def get_contacts_by_fname(first_name: str, db: Session = Depends(get_db)):
-    """
-    The function returns a list of contacts with the given first name.
-    It takes in a string representing the first name and returns a list of contacts.
-
-    :param first_name: str: Pass the first name of a contact to be searched for
-    :param db: Session: Get the database connection
-    :return: A list of contacts with the specified first name
-    """
-    contacts = await repository_contacts.get_contacts_by_fname(first_name, db)
-    if not contacts:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='NOT_FOUND')
-    return contacts
-
-
-@router.get(
-    "/by_lname/{last_name}",
-    response_model=List[ContactResponse]
-)
-async def get_contacts_by_lname(last_name: str, db: Session = Depends(get_db)):
-    """
-    The function returns a list of contacts with the specified last name.
-    It takes in a string representing the last name and returns a list of contacts.
-
-    :param last_name: str: Pass the last name of the contact to be searched for
-    :param db: Session: Pass the database session to the repository layer
-    :return: A list of contacts with the specified last name
-    """
-    contacts = await repository_contacts.get_contacts_by_lname(last_name, db)
-    if not contacts:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='NOT_FOUND')
-    return contacts
-
-
-@router.get(
-    "/by_email/{email}",
-    response_model=List[ContactResponse])
-async def get_contacts_by_email(email: str, db: Session = Depends(get_db)):
-    """
-    The function returns a list of contacts with the specified email address.
-
-    :param email: str: Filter the contacts by email
-    :param db: Session: Pass the database session to the function
-    :return: A list of contacts
-    """
-
-    contacts = await repository_contacts.get_contacts_by_email(email, db)
-    if not contacts:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='NOT_FOUND')
-    return contacts
 
 
 @router.post(
@@ -158,4 +102,3 @@ async def remove_contact(contact_id: int, db: Session = Depends(get_db)):
     if contact is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='NOT_FOUND')
     return contact
-
